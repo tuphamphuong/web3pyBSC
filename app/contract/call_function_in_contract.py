@@ -46,9 +46,6 @@ config_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'con
 print("config_file_path ", config_file_path)
 config_object.read(config_file_path)
 
-# BSC Mainnet
-bsc_mainnet_url = config_object["BINANCE"]["MainnetUrl"]
-bsc_mainnet_chain_id = int(config_object["BINANCE"]["MainnetChainId"])
 # BSC Testnet
 bsc_testnet_url = config_object["BINANCE"]["TestnetUrl"]
 bsc_testnet_chain_id = int(config_object["BINANCE"]["TestnetChainId"])
@@ -75,40 +72,20 @@ web3.eth.default_account = acc_checksum
 # print("w3.eth.defaultAccount.address ", web3.eth.defaultAccount.address)
 print("web3.eth.getBalance ", web3.eth.getBalance(acc.address))
 
-Greeter = web3.eth.contract(abi=abi, bytecode=bytecode)
-print("contract.address ", Greeter.address)
-
-tx = Greeter.constructor().buildTransaction({
-    'chainId': bsc_testnet_chain_id,
-    'gas': 1000000,
-    'gasPrice': web3.toWei(20, 'gwei'),
-    'nonce': web3.eth.getTransactionCount(acc.address, 'pending'),
-})
-signed = web3.eth.account.signTransaction(tx, my_metamask_private_key)
-tx_hash = web3.eth.sendRawTransaction(signed.rawTransaction)
-print(f"Contract deployed; {tx_hash.hex()} Waiting to transaction receipt")
-
-# Wait for the transaction to be mined, and get the transaction receipt
-tx_receipt = web3.eth.wait_for_transaction_receipt(tx_hash)
-print("tx_receipt ", tx_receipt)
-print("tx_receipt.contractAddress ", tx_receipt.contractAddress)
-
-# Call set function in smart contract
-greeter = web3.eth.contract(address=tx_receipt.contractAddress, abi=abi)
+greeter = web3.eth.contract(address="0xd7EC9720Ec307eAF015610D5E35315F13D0E22aC", abi=abi)
 print("greeter.functions.greet().call() ", greeter.functions.greet().call())
-# TODO: Solution 1
-tx = Greeter.functions.setGreeting('Nihao').buildTransaction({
+
+tx = greeter.functions.setGreeting('Totti').buildTransaction({
     'chainId': bsc_testnet_chain_id,
     'gas': 100000,
     'gasPrice': web3.toWei(160, 'gwei'),
     'nonce': web3.eth.getTransactionCount(acc.address, 'pending'),
-    # TODO: 'to' required?
-    'to': acc_checksum,
+    # TODO: 'to' is not required?
+    # 'to': acc_checksum
 })
 signed = web3.eth.account.signTransaction(tx, my_metamask_private_key)
-tx_hash = web3.eth.sendRawTransaction(signed.rawTransaction)
-print(f"Function called: {tx_hash.hex()} Waiting to transaction receipt")
+# tx_hash = web3.eth.sendRawTransaction(signed.rawTransaction)
+# print(f"Function called; {tx_hash.hex()} Waiting to transaction receipt")
 
-greeter = web3.eth.contract(address=tx_receipt.contractAddress, abi=abi)
+greeter = web3.eth.contract(address="0xd7EC9720Ec307eAF015610D5E35315F13D0E22aC", abi=abi)
 print("greeter.functions.greet().call() ", greeter.functions.greet().call())
-

@@ -75,7 +75,6 @@ print("nonce with pending before transaction", nonce_with_pending)
 # TODO: Wrong solution with web3.eth.getBlock("latest").gasLimit = 30000000
 # block = web3.eth.getBlock("latest")
 # gasLimit = block.gasLimit
-# TODO: Why 100000 is working solution
 gasLimit = 100000
 print("gasLimit ", gasLimit)
 
@@ -99,7 +98,7 @@ signed_txn = web3.eth.account.signTransaction(token_txn, account_from_private_ke
 print("signed_txn ", signed_txn)
 
 tx_hash = web3.eth.sendRawTransaction(signed_txn.rawTransaction)
-print("tx_hash ", tx_hash)
+print("tx_hash ", tx_hash.hex())
 
 nonce_with_pending = web3.eth.getTransactionCount(account_from, "pending")
 print("nonce with pending before transaction", nonce_with_pending)

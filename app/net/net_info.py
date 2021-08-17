@@ -24,20 +24,5 @@ print("w3.clientVersion ", web3.clientVersion)
 print("w3.isConnected() ", web3.isConnected())
 print("w3.eth.block_number ", web3.eth.block_number)
 
-# Metamask BSC Testnet
-account_from = config_object["ACCOUNT"]["AccountFrom"]
-print("account_from ", account_from)
-
-account_to = config_object["ACCOUNT"]["AccountTo"]
-print("account_to ", account_to)
-
-# Get transaction count
-nonce = web3.eth.getTransactionCount(account_from)
-print("nonce success ", nonce)
-
-# Get transaction count
-nonce = web3.eth.getTransactionCount(account_from, "pending")
-print("nonce include pending ", nonce)
-
-# last_block = web3.eth.get_block('latest')
-# print("last_block ", last_block)
+# Net
+print("web3.net.peer_count ", web3.net.peer_count)
