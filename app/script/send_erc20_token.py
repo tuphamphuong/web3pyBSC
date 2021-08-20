@@ -10,14 +10,11 @@ config_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'con
 print("config_file_path ", config_file_path)
 config_object.read(config_file_path)
 
-# BSC Mainnet
-bsc_mainnet_url = config_object["BINANCE"]["MainnetUrl"]
-bsc_mainnet_chain_id = int(config_object["BINANCE"]["MainnetChainId"])
 # BSC Testnet
-bsc_testnet_url = config_object["BINANCE"]["TestnetUrl"]
-bsc_testnet_chain_id = int(config_object["BINANCE"]["TestnetChainId"])
+bsc_net_url = config_object["BINANCE"]["NetUrl"]
+bsc_net_chain_id = int(config_object["BINANCE"]["NetChainId"])
 
-web3 = Web3(Web3.HTTPProvider(bsc_testnet_url))
+web3 = Web3(Web3.HTTPProvider(bsc_net_url))
 # TODO: Disable this cause w3.eth.get_block throw exception with ... POA ... message
 web3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
@@ -38,7 +35,6 @@ print("w3.eth.get_balance(account_from) ", account_from_account_balance)
 # Account To BSC Testnet
 account_to = config_object["ACCOUNT"]["AccountTo"]
 print("account_to ", account_to, "web3.isChecksumAddress ", web3.isChecksumAddress(account_to))
-account_to_private_key = config_object["ACCOUNT"]["AccountToPrivateKey"]
 
 account_to_account_balance = web3.eth.get_balance(account_to)
 print("w3.eth.get_balance(account_to) ", account_to_account_balance)
@@ -88,7 +84,7 @@ token_txn = contract.functions.transfer(
      account_to,
      send_amount,
  ).buildTransaction({
-     'chainId': bsc_testnet_chain_id,
+     'chainId': bsc_net_chain_id,
      'gas': gasLimit,
      'gasPrice': gas_price,
      'nonce': nonce_with_pending,

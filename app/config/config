@@ -7,3 +7,7 @@ AccountFrom =
 AccountFromPrivateKey =
 
 AccountTo =
+
+[CONTRACT]
+erc20_contract_address =
+erc20_contract_abi =

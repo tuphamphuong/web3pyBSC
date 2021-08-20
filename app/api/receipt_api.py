@@ -1,6 +1,7 @@
 import json
 
 from fastapi import APIRouter, Depends, HTTPException
+from loguru import logger
 from pydantic.tools import lru_cache
 
 from app.config.service_setting import Settings
@@ -19,7 +20,7 @@ def get_settings():
 @router.get("/{tx_hash}")
 def get(tx_hash, settings: Settings = Depends(get_settings)):
     tx = settings.web3.eth.get_transaction_receipt(tx_hash)
-    print("tx ", tx)
+    logger.debug(f"tx {tx}")
 
     result = dict({
         "blockHash": tx["blockHash"].hex(),
