@@ -1,12 +1,9 @@
 [BINANCE]
-MainnetUrl = https://bsc-dataseed.binance.org/
-MainnetChainId = 56
-TestnetUrl = https://data-seed-prebsc-1-s1.binance.org:8545/
-TestnetChainId = 97
+NetUrl = https://data-seed-prebsc-2-s3.binance.org:8545/
+NetChainId = 97
 
 [ACCOUNT]
 AccountFrom =
 AccountFromPrivateKey =
 
 AccountTo =
-AccountToPrivateKey =
