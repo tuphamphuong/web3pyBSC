@@ -25,7 +25,7 @@ compiled_sol = compile_source(
                  return greeting;
              }
          }
-         '''
+     '''
 )
 
 # Retrieve the contract interface

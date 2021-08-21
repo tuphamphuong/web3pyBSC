@@ -37,8 +37,8 @@ def get(tx_hash, settings: Settings = Depends(get_settings)):
     })
     return result
 
-@router.post("/")
-def post(account_to, amount: int, settings: Settings = Depends(get_settings)):
+@router.post("/erc20/")
+def post_erc20(account_to, amount: int, settings: Settings = Depends(get_settings)):
     web3 = settings.web3
 
     contract_abi = json.loads('[{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"initialSupply","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]')
@@ -72,23 +72,23 @@ def post(account_to, amount: int, settings: Settings = Depends(get_settings)):
     logger.debug("Wait done")
 
     # Get transaction receipt
-    tx = web3.eth.get_transaction_receipt(tx_hash)
-    logger.debug(f"w3.eth.get_transaction_receipt {tx}")
+    receipt = web3.eth.get_transaction_receipt(tx_hash)
+    logger.debug(f"w3.eth.get_transaction_receipt {receipt}")
 
     result = dict({
-        "blockHash": tx["blockHash"].hex(),
-        "blockNumber": tx["blockNumber"],
-        "contractAddress": tx["contractAddress"],
-        "cumulativeGasUsed": tx["cumulativeGasUsed"],
-        "from": tx["from"],
-        "gasUsed": tx["gasUsed"],
-        "logs": tx["logs"],
-        "logsBloom": tx["logsBloom"].hex(),
-        "status": tx["status"],
-        "to": tx["to"],
-        "transactionHash": tx["transactionHash"].hex(),
-        "transactionIndex": tx["transactionIndex"],
-        "type": tx["type"],
+        "blockHash": receipt["blockHash"].hex(),
+        "blockNumber": receipt["blockNumber"],
+        "contractAddress": receipt["contractAddress"],
+        "cumulativeGasUsed": receipt["cumulativeGasUsed"],
+        "from": receipt["from"],
+        "gasUsed": receipt["gasUsed"],
+        "logs": receipt["logs"],
+        "logsBloom": receipt["logsBloom"].hex(),
+        "status": receipt["status"],
+        "to": receipt["to"],
+        "transactionHash": receipt["transactionHash"].hex(),
+        "transactionIndex": receipt["transactionIndex"],
+        "type": receipt["type"],
     })
     return result
 
